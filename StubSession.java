@@ -9,8 +9,9 @@ import javax.servlet.http.HttpSessionContext;
 
 public class StubSession implements HttpSession{
 
-        private HashMap<String, Object> map = new HashMap<>();
+        private HashMap<String, Object> map = new HashMap<String, Object>();
         private String currentURL;
+        public boolean sessionInvalidated =false;
         
         public void setURL(String url){
         	currentURL = url;
@@ -20,102 +21,102 @@ public class StubSession implements HttpSession{
         	return currentURL;
         }
       
-        @Override
+        //@Override
         public void setAttribute(String arg0, Object arg1) {
                 map.put(arg0, arg1);
         }
 
-        @Override
+        //@Override
         public Object getAttribute(String arg0) {
                 return map.get(arg0);
         }
 
-        @Override
+        //@Override
         public Enumeration getAttributeNames() {
                 // TODO Auto-generated method stub
                 return null;
         }
 
-        @Override
+        //@Override
         public long getCreationTime() {
                 // TODO Auto-generated method stub
                 return 0;
         }
 
-        @Override
+        //@Override
         public String getId() {
                 // TODO Auto-generated method stub
                 return null;
         }
 
-        @Override
+        //@Override
         public long getLastAccessedTime() {
                 // TODO Auto-generated method stub
                 return 0;
         }
 
-        @Override
+        //@Override
         public int getMaxInactiveInterval() {
                 // TODO Auto-generated method stub
                 return 0;
         }
 
-        @Override
+        //@Override
         public ServletContext getServletContext() {
                 // TODO Auto-generated method stub
                 return null;
         }
 
         @SuppressWarnings("deprecation")
-        @Override
+        //@Override
         public HttpSessionContext getSessionContext() {
                 // TODO Auto-generated method stub
                 return null;
         }
 
-        @Override
+        //@Override
         public Object getValue(String arg0) {
                 // TODO Auto-generated method stub
                 return null;
         }
 
-        @Override
+        //@Override
         public String[] getValueNames() {
                 // TODO Auto-generated method stub
                 return null;
         }
 
-        @Override
+        //@Override
         public void invalidate() {
-                // TODO Auto-generated method stub
+        	sessionInvalidated = true;
 
         }
 
-        @Override
+        //@Override
         public boolean isNew() {
                 // TODO Auto-generated method stub
                 return false;
         }
 
-        @Override
+        //@Override
         public void putValue(String arg0, Object arg1) {
                 // TODO Auto-generated method stub
 
         }
 
-        @Override
+        //@Override
         public void removeAttribute(String arg0) {
                 // TODO Auto-generated method stub
 
         }
 
-        @Override
+        //@Override
         public void removeValue(String arg0) {
                 // TODO Auto-generated method stub
 
         }
 
-        @Override
+        //@Override
         public void setMaxInactiveInterval(int arg0) {
                 // TODO Auto-generated method stub
 
