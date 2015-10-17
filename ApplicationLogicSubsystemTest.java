@@ -25,6 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import Storage.DBManager;
 import Storage.Repository.DoubleRegistrationException;
+import Storage.Repository.EmployeeProfile;
 import Storage.Repository.PanelistProfile;
 import Storage.Repository.UserProfile;
 import Storage.Repository.UserType;
@@ -601,7 +602,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Sub Systems Test 10(SST10)
 	 * Verify that a createPanel request to the facade with valid inputs
 	 *  will create a panel
-	 * and redirect user to the expected page
+	 *   and redirect user to the expected page
 	 * Initial State: HttpSession(StubSession): blank session
 	 * Input: HttpRequest, HttpResponse, 
 	 * InitParameter("action-type")="createPanel", String panelName, 
@@ -610,8 +611,6 @@ public class ApplicationLogicSubsystemTest {
 	 * Session URL == ("messagePage?messageCode=Panel has been successfully created.")
 	 */
 	public void SST10() throws Exception{
-		//EmployeeProfile emp = mock(EmployeeProfile.class);
-		
 		doReturn("createPanel").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -623,7 +622,10 @@ public class ApplicationLogicSubsystemTest {
         }).when(mockResponse).sendRedirect(anyString());
 		when(mockRequest.getParameter("panelName")).thenReturn("New Panel");
 		when(mockRequest.getParameter("panelDescription")).thenReturn("Panel Created");
-        when(DBManager.createPanel("New Panel", "Panel Created",0)).thenReturn(true);
+		EmployeeProfile e = new EmployeeProfile(mockUser);
+		e.EmployeeID = 5;
+		mockSession.setAttribute("User Profile", e);
+        when(DBManager.createPanel("New Panel", "Panel Created",5)).thenReturn(true);
         
 		/* Act */
 		controllerSpy.doPost(mockRequest, mockResponse);
@@ -661,7 +663,9 @@ public class ApplicationLogicSubsystemTest {
 		when(mockRequest.getParameter("panelDescription")).thenReturn("Panel Created");
 		//when(mockRequest.getParameter("employeeID")).thenReturn("1");
         when(DBManager.createPanel("New Panel", "Panel Created",0)).thenReturn(false);
-        
+        EmployeeProfile e = new EmployeeProfile(mockUser);
+        e.EmployeeID = 5;
+        mockSession.setAttribute("User Profile", e);
 		/* Act */
 		controllerSpy.doPost(mockRequest, mockResponse);
 		/* Assert */
