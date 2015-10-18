@@ -1,15 +1,12 @@
 package SubsystemTests;
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,7 +19,6 @@ import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import Storage.DBManager;
 import Storage.Repository.DoubleRegistrationException;
 import Storage.Repository.EmployeeProfile;
@@ -74,11 +70,17 @@ public class ApplicationLogicSubsystemTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		controllerSpy = null;
+		mockRequest = null;
+		mockResponse = null;
+		mockPrintWriter = null;
+		mockUser = null;
+		mockSession = null;
 	}
 
 	@Test
 	/**
-	 * Sub Systems Test 1a(SST1a)
+	 * Sub Systems Test 1(SST_001)
 	 * Verify that a login request to the facade with valid credentials (Panelist User type) 
 	 * will log the current user in.
 	 * Initial State: HttpSession(StubSession): blank session
@@ -88,7 +90,7 @@ public class ApplicationLogicSubsystemTest {
 	 * 	 	"User Form"== instanceof PanelistForms, 
 	 * 		and Session URL == ("messagePage?messageCode=You are now logged in. Welcome.")
 	 */
-	public void SST1a() throws Exception{
+	public void SST_001() throws Exception{
 		mockUser.Type = UserType.PANELIST;
 		mockUser.UserName = "mrrobot";
 		String pass = "123abc";
@@ -121,7 +123,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 1b(SST1b)
+	 * Sub Systems Test 2(SST_002)
 	 * Verify that a login request to the facade with valid credentials 
 	 * will log the current user in.(Employee Usertype)
 	 * Initial State: HttpSession(StubSession): blank session
@@ -131,7 +133,7 @@ public class ApplicationLogicSubsystemTest {
 	 * 	 	"User Form"== instanceof EmployeeForms, 
 	 * 		and Session URL == ("messagePage?messageCode=You are now logged in. Welcome.")
 	 */
-	public void SST1b() throws Exception{
+	public void SST_002() throws Exception{
 		mockUser.Type = UserType.EMPLOYEE;
 		mockUser.UserName = "mrrobot";
 		String pass = "123abc";
@@ -164,7 +166,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 1c(SST1c)
+	 * Sub Systems Test 3(SST_003)
 	 * Verify that a login request to the facade with valid credentials  
 	 * will log the current user in. (Administrator user type)
 	 * Initial State: HttpSession(StubSession): blank session
@@ -174,7 +176,7 @@ public class ApplicationLogicSubsystemTest {
 	 * 	 	"User Form"== instanceof AdministratorForms, 
 	 * 		and Session URL == ("messagePage?messageCode=You are now logged in. Welcome.")
 	 */
-	public void SST1c() throws Exception{
+	public void SST_003() throws Exception{
 		mockUser.Type = UserType.ADMINISTRATOR;
 		mockUser.UserName = "mrrobot";
 		String pass = "123abc";
@@ -207,7 +209,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 2(SST2)
+	 * Sub Systems Test 4(SST_004)
 	 * Verify that a login request to the facade with invalid credentials  
 	 * will not log the user in.
 	 * Initial State: HttpSession(StubSession): blank session
@@ -215,7 +217,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession): Attributes:"User Profile"==null, 
 	 * and Session URL == "login"
 	 */
-	public void SST2() throws Exception{
+	public void SST_004() throws Exception{
 		mockUser.Type = UserType.PANELIST;
 		mockUser.UserName = "mrrobot";
 		String pass = "123abc";
@@ -245,7 +247,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 3(SST3)
+	 * Sub Systems Test 5(SST_005)
 	 * Verify that a createPanelistAccount request to the facade will create 
 	 * a user account.
 	 * Initial State: HttpSession(StubSession): blank session
@@ -254,7 +256,7 @@ public class ApplicationLogicSubsystemTest {
 	 * 			 valid new panelist info
 	 * Expected Output: StubSession url == "messagePage?messageCode=Registration Successful"
 	 */
-	public void SST3() throws Exception{
+	public void SST_005() throws Exception{
 		when(mockRequest.getParameter("pFName")).thenReturn("mr");
 		when(mockRequest.getParameter("pLName")).thenReturn("robot");
 		when(mockRequest.getParameter("username")).thenReturn("mrrobot");
@@ -313,7 +315,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 4(SST4)
+	 * Sub Systems Test 6(SST_006)
 	 * Verify that a invalid createPanelistAccount request to the facade will not create 
 	 * a user account.
 	 * Initial State: HttpSession(StubSession): blank session
@@ -322,7 +324,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: StubSession.URL = "errorPage?errorCode=Registration failed. 
 	 * Please try again."
 	 */
-	public void SST4() throws Exception{
+	public void SST_006() throws Exception{
 		when(mockRequest.getParameter("pFName")).thenReturn("mr");
 		when(mockRequest.getParameter("pLName")).thenReturn("robot");
 		when(mockRequest.getParameter("username")).thenReturn("mrrobot");
@@ -380,7 +382,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 5(SST5)
+	 * Sub Systems Test 7(SST_007)
 	 * Verify that a invalid createPanelistAccount request to the facade 
 	 * with an already existing ISCID
 	 * will not create a user account
@@ -390,7 +392,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: StubSession.URL = "errorPage?errorCode=Double 
 	 * Registration Exception: ISCID is already in use."
 	 */
-	public void SST5() throws Exception{
+	public void SST_007() throws Exception{
 		when(mockRequest.getParameter("pFName")).thenReturn("mr");
 		when(mockRequest.getParameter("pLName")).thenReturn("robot");
 		when(mockRequest.getParameter("username")).thenReturn("mrrobot");
@@ -451,7 +453,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 6(SST6)
+	 * Sub Systems Test 8(SST_008)
 	 * Verify that a addToPanel request to the facade with valid IDs
 	 *  will add to the panel  
 	 * Initial State: HttpSession(StubSession): blank session
@@ -460,7 +462,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession): 
 	 * 			Session URL == "messagePage?messageCode=Panelist has been successfully added."
 	 */
-	public void SST6() throws Exception{
+	public void SST_008() throws Exception{
 
 		doReturn("addToPanel").when(controllerSpy).getInitParameter("action-type");
 		when(mockRequest.getParameter("addToPanel")).thenReturn("1");
@@ -484,12 +486,11 @@ public class ApplicationLogicSubsystemTest {
 				+ "added.'",
 				((StubSession) mockSession).getURL(),
 				"messagePage?messageCode=Panelist has been successfully added.");
-		//verify( mockResponse, atMost( 1 ) ).sendRedirect( "login" );
-		
+		//verify( mockResponse, atMost( 1 ) ).sendRedirect( "login" );		
 	}
 		@Test
 	/**
-	 * Sub Systems Test 7(SST7)
+	 * Sub Systems Test 9(SST_009)
 	 * Verify that a addToPanel request to the facade with invalid IDs 
 	 * will not add to the panel  
 	 * Initial State: HttpSession(StubSession): blank session
@@ -498,7 +499,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession): 
 	 * 			Session URL == "errorPage?errorCode=Error adding panelist. Please try again."
 	 */
-	public void SST7() throws Exception{		
+	public void SST_009() throws Exception{		
 		doReturn("addToPanel").when(controllerSpy).getInitParameter("action-type");
 		when(mockRequest.getParameter("addToPanel")).thenReturn("1");
 		when(mockRequest.getParameter("panelistID")).thenReturn("555");
@@ -527,7 +528,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**		 
-	 * Sub Systems Test 8(SST8)
+	 * Sub Systems Test 10(SST_010)
 	 * Verify that a updatePanelStatus request to the facade with valid inputs will 
 	 * update panel status
 	 * and redirect user to the expected page
@@ -537,7 +538,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession): 
 	 * Session URL == ("messagePage?messageCode=Panel status updated.")
 	 */
-	public void SST8() throws Exception{
+	public void SST_010() throws Exception{
 		doReturn("updatePanelStatus").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -563,7 +564,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**		 
-	 * Sub Systems Test 9(SST9)
+	 * Sub Systems Test 11(SST_011)
 	 * Verify that a updatePanelStatus request to the facade with invalid inputs
 	 *  will not update panel status
 	 * and redirect user to the expected page
@@ -574,7 +575,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession):
 	 *  Session URL == ("errorPage?errorCode=Error updating panel. Please try again.")
 	 */
-	public void SST9() throws Exception{
+	public void SST_011() throws Exception{
 		doReturn("updatePanelStatus").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -599,10 +600,10 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**		 
-	 * Sub Systems Test 10(SST10)
+	 * Sub Systems Test 12(SST_012)
 	 * Verify that a createPanel request to the facade with valid inputs
 	 *  will create a panel
-	 *   and redirect user to the expected page
+	 * and redirect user to the expected page
 	 * Initial State: HttpSession(StubSession): blank session
 	 * Input: HttpRequest, HttpResponse, 
 	 * InitParameter("action-type")="createPanel", String panelName, 
@@ -610,7 +611,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Expected Output: HttpSession(StubSession): 
 	 * Session URL == ("messagePage?messageCode=Panel has been successfully created.")
 	 */
-	public void SST10() throws Exception{
+	public void SST_012() throws Exception{
 		doReturn("createPanel").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -625,8 +626,7 @@ public class ApplicationLogicSubsystemTest {
 		EmployeeProfile e = new EmployeeProfile(mockUser);
 		e.EmployeeID = 5;
 		mockSession.setAttribute("User Profile", e);
-        when(DBManager.createPanel("New Panel", "Panel Created",5)).thenReturn(true);
-        
+		when(DBManager.createPanel("New Panel", "Panel Created",5)).thenReturn(true);
 		/* Act */
 		controllerSpy.doPost(mockRequest, mockResponse);
 		/* Assert */
@@ -637,7 +637,7 @@ public class ApplicationLogicSubsystemTest {
 	}	
 	@Test
 	/**		 
-	 * Sub Systems Test 11(SST11)
+	 * Sub Systems Test 13(SST_013)
 	 * Verify that a createPanel request to the facade with invalid inputs
 	 *  will not create a panel
 	 * and redirect user to the expected page
@@ -649,7 +649,7 @@ public class ApplicationLogicSubsystemTest {
 	 * Session URL == ("errorPage?errorCode=There was an error creating the panel. 
 	 * Please try again.")
 	 */
-	public void SST11() throws Exception{
+	public void SST_013() throws Exception{
 		doReturn("createPanel").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
             public Object answer(InvocationOnMock invocation) {
@@ -661,11 +661,11 @@ public class ApplicationLogicSubsystemTest {
         }).when(mockResponse).sendRedirect(anyString());
 		when(mockRequest.getParameter("panelName")).thenReturn("New Panel");
 		when(mockRequest.getParameter("panelDescription")).thenReturn("Panel Created");
-		//when(mockRequest.getParameter("employeeID")).thenReturn("1");
-        when(DBManager.createPanel("New Panel", "Panel Created",0)).thenReturn(false);
-        EmployeeProfile e = new EmployeeProfile(mockUser);
-        e.EmployeeID = 5;
-        mockSession.setAttribute("User Profile", e);
+		EmployeeProfile e = new EmployeeProfile(mockUser);
+		e.EmployeeID = 5;
+		mockSession.setAttribute("User Profile", e);
+		when(DBManager.createPanel("New Panel", "Panel Created",5)).thenReturn(false);
+        
 		/* Act */
 		controllerSpy.doPost(mockRequest, mockResponse);
 		/* Assert */
@@ -677,7 +677,7 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 12(SST12)
+	 * Sub Systems Test 14(SST_014)
 	 * Verify that a valid searchPanelists request to the facade will search 
 	 * a panelist.
 	 * Initial State: HttpSession(StubSession): blank session
@@ -685,7 +685,7 @@ public class ApplicationLogicSubsystemTest {
 	 * InitParameter("action-type")="searchPanelists", invalid panelist info
 	 * Expected Output: StubSession.URL = "displayPanelists.jsp"
 	 */
-	public void SST12() throws Exception{
+	public void SST_014() throws Exception{
 		when(mockRequest.getParameter("pFName")).thenReturn("mr");
 		when(mockRequest.getParameter("pLName")).thenReturn("robot");
 		when(mockRequest.getParameter("pInstitution")).thenReturn("FIU");
@@ -740,15 +740,15 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 13(SST13)
+	 * Sub Systems Test 15(SST_015)
 	 * Verify that a invalid searchPanelists request to the facade will search 
 	 * a panelist.
 	 * Initial State: HttpSession(StubSession): blank session
 	 * Input: HttpRequest(mockRequest), HttpResponse(mockResponse), 
 	 * InitParameter("action-type")="searchPanelists", invalid panelist info
-	 * Expected Output: StubSession.URL = "displayPanelists.jsp"
+	 * Expected Output: StubSession.URL = "messagePage?messageCode=No Panelists Found."
 	 */
-	public void SST13() throws Exception{
+	public void SST_015() throws Exception{
 		when(mockRequest.getParameter("pFName")).thenReturn("mr");
 		when(mockRequest.getParameter("pLName")).thenReturn("robot");
 		when(mockRequest.getParameter("pInstitution")).thenReturn("FIU");
@@ -800,17 +800,16 @@ public class ApplicationLogicSubsystemTest {
 	}
 	@Test
 	/**
-	 * Sub Systems Test 14(SST14)
+	 * Sub Systems Test 16(SST_016)
 	 * Verify that a log out request to the facade with valid credentials (Panelist User type) 
 	 * will log the current user in.
 	 * Initial State: HttpSession(StubSession): blank session
-	 * Input: HttpRequest, HttpResponse, InitParameter("action-type")="doLogin",
+	 * Input: HttpRequest, HttpResponse, InitParameter("action-type")="doLogout",
 	 *  valid user credentials
-	 * Expected Output: HttpSession(StubSession): Attributes:"User Profile"==mockUser,
-	 * 	 	"User Form"== instanceof PanelistForms, 
-	 * 		and Session URL == ("messagePage?messageCode=You are now logged in. Welcome.")
+	 * Expected Output: HttpSession(StubSession): Session should contain mockSession invalidated
+	 * 		and Session URL == ("index.jsp")
 	 */
-	public void SST14() throws Exception{
+	public void SST_016() throws Exception{
 		
 		doReturn("doLogout").when(controllerSpy).getInitParameter("action-type");
 		doAnswer(new Answer<Object>() {
