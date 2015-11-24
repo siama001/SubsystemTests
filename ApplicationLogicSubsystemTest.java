@@ -831,6 +831,22 @@ public class ApplicationLogicSubsystemTest {
 				"index.jsp");
 		
 	}
-
-
+	@Test
+	/**
+	 * Sub Systems Test 17(SST_017)
+	 * Verify that a getPanel request to the facade will return null?
+	 * Initial State: HttpSession(StubSession): blank session
+	 * Input: HttpRequest
+	 * Expected Output: NULL
+	 */
+	public void SST_017() throws Exception{
+		Object result;
+		/* Act */
+		result = controllerSpy.getPanel(mockRequest);
+		/* Assert */
+		assertSame("the result should be a null object",
+				result,
+				null);	
+	}
+	
 }

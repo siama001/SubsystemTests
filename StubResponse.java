@@ -222,5 +222,9 @@ public class StubResponse implements HttpServletResponse{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public String getParameter(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
