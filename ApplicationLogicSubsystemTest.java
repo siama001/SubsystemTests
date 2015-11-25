@@ -846,7 +846,8 @@ public class ApplicationLogicSubsystemTest {
 		/* Assert */
 		assertSame("the result should be a null object",
 				result,
-				null);	
+				null);
+		
 	}
 	
 }
